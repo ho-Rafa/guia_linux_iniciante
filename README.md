@@ -84,3 +84,23 @@ Enquanto o app não é instalado, o widget mostra "giscus is not installed".
 
 ---
 Conteúdo educativo. Só teste redes/sistemas que são seus ou com autorização por escrito.
+
+## Raven que segue o mouse (estilo oneko)
+
+Um Raven voa atrás do cursor em todas as páginas (inspirado no `oneko`). Feito do zero em
+HTML/CSS/JS, sem bibliotecas:
+
+- **Sprite sheet vetorial:** `assets/svg/raven-sprite.svg` (8 direções × 2 frames de asa + pousado,
+  alerta e dormindo). É gerada por um script — para mexer no desenho, edite
+  `scripts/build-raven-sprite.mjs` e rode:
+  ```bash
+  node scripts/build-raven-sprite.mjs
+  ```
+- **Controlador:** `js/raven-follow.js` — persegue o cursor com suavização, vira para a direção
+  do movimento, bate as asas, fica parado e "dorme" (💤) quando o mouse para, e acorda assustado.
+- **Respeita o usuário:** não esconde o cursor, não bloqueia cliques (`pointer-events: none`),
+  desliga em telas de toque e quando o sistema pede menos animação (`prefers-reduced-motion`).
+- **Botão liga/desliga** no canto inferior direito; a preferência fica salva no navegador.
+
+Cada página define `window.__RAVEN_BASE__` (`""` na raiz, `"../"` dentro de `pages/`) antes de
+carregar `raven-follow.js`, para os caminhos do sprite funcionarem.
