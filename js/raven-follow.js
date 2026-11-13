@@ -13,9 +13,12 @@
   var SIZE = 52;          // tamanho exibido do Raven (px)
   var CELL = 64;          // tamanho da célula na folha
   var COLS = 8;           // direções por linha
-  var SPEED = 0.16;       // suavidade da perseguição (lerp)
-  var FLAP_MS = 140;      // troca de frame da asa
-  var IDLE_MS = 5000;     // tempo parado até dormir
+  var SPEED = 0.10;       // o Raven é MAIS LENTO que o mouse (menor = mais lento)
+  var FLAP_MS = 220;      // troca de frame da asa (maior = batida mais calma)
+  var SLEEP_MS = 6000;    // tempo pousado até começar a dormir
+  var STOP_R = 16;        // chega bem perto do ponto ao lado antes de pousar
+  var WAKE_R = 60;        // o mouse se afastou tanto que ele volta a voar (histerese)
+  var PARK = { x: -30, y: -4 }; // pousa AO LADO do ponteiro, não em cima
   var KEY = "gli_raven_on";
 
   // Ordem das colunas na linha de voo: E, SE, S, SW, W, NW, N, NE  (ângulos 0..315)
@@ -28,7 +31,7 @@
   // Começa fora da tela (topo): o Raven "voa pra dentro" no primeiro movimento do mouse.
   var mouseX = window.innerWidth / 2, mouseY = -80;
   var x = mouseX, y = mouseY;
-  var lastMove = Date.now();
+  var flying = false, parkedAt = 0, lastMove = 0;
   var flapOn = false, lastFlap = 0, alertUntil = 0;
 
   function setCell(col, row) {
@@ -39,29 +42,39 @@
     var p = e.touches ? e.touches[0] : e;
     mouseX = p.clientX;
     mouseY = p.clientY;
-    if (Date.now() - lastMove > IDLE_MS) alertUntil = Date.now() + 350; // acordou
     lastMove = Date.now();
   }
 
   function frame(now) {
-    var dx = mouseX - x, dy = mouseY - y;
+    // alvo = AO LADO do ponteiro (não em cima dele)
+    var tx = mouseX + PARK.x, ty = mouseY + PARK.y;
+    var dx = tx - x, dy = ty - y;
     var dist = Math.hypot(dx, dy);
+    var mouseStill = now - lastMove > 120;
 
-    if (now < alertUntil) {
-      setCell(1, 2); // alerta
-    } else if (dist < 12) {
-      // parado: idle ou dormindo
-      if (Date.now() - lastMove > IDLE_MS) {
-        setCell(Math.floor(now / 600) % 2 === 0 ? 2 : 3, 2); // sono A/B
-      } else {
-        setCell(0, 2); // pousado
-      }
-    } else {
-      // voando: move e escolhe a direção
+    if (flying) {
+      // voa atrás, sempre mais devagar que o mouse
       x += dx * SPEED;
       y += dy * SPEED;
-      if (now - lastFlap > FLAP_MS) { flapOn = !flapOn; lastFlap = now; }
-      setCell(dirCol(Math.atan2(dy, dx) * 180 / Math.PI), flapOn ? 1 : 0);
+      // só POUSA quando chega perto E o mouse está parado -> para ao lado do ponteiro
+      if (dist < STOP_R && mouseStill) { flying = false; parkedAt = now; }
+      if (now < alertUntil) {
+        setCell(1, 2); // susto ao acordar
+      } else {
+        if (now - lastFlap > FLAP_MS) { flapOn = !flapOn; lastFlap = now; }
+        setCell(dirCol(Math.atan2(dy, dx) * 180 / Math.PI), flapOn ? 1 : 0);
+      }
+    } else {
+      // pousado ao lado do mouse
+      if (dist > WAKE_R) {
+        // o mouse foi embora -> volta a voar (acorda assustado se estava dormindo)
+        flying = true;
+        if (now - parkedAt > SLEEP_MS) alertUntil = now + 320;
+      } else if (now - parkedAt > SLEEP_MS) {
+        setCell(Math.floor(now / 550) % 2 === 0 ? 2 : 3, 2); // dormindo: z / z z
+      } else {
+        setCell(0, 2); // pousado, acordado
+      }
     }
 
     el.style.transform = "translate(" + (x - SIZE / 2) + "px," + (y - SIZE / 2) + "px)";
