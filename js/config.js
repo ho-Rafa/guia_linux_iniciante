@@ -12,9 +12,9 @@ window.SITE_CONFIG = {
   // --- Portão de acesso (senha única) ---
   // Guarde o SHA-256 da senha, nunca a senha em texto. Para gerar um novo hash:
   //   node -e "console.log(require('crypto').createHash('sha256').update('SUA_SENHA').digest('hex'))"
-  // Senha padrão atual: "rafa-raven"  (TROQUE antes de publicar!)
+  // A senha é definida pelo autor; aqui fica só o SHA-256 dela (nunca o texto).
   acesso: {
-    senhaSha256: "0ee98982eb98d8769873dbb20b0672abfe73e504a072592a365476216d984c44",
+    senhaSha256: "b691eb53e47817961136a84c2e5d3f9ea61b537dd0bfd885d69964649b8d06dd",
     // Quanto tempo o acesso fica liberado no navegador (em horas). 0 = só a sessão atual.
     validadeHoras: 72,
     dica: "A senha é revelada nos vídeos do canal e fixada na aba Comunidade do YouTube.",
