@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Fórum da Comunidade · Rafa & Raven</title>
+  <meta name="description" content="Fórum da comunidade Rafa & Raven: compartilhe ideias, dicas e peça ajuda." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="../js/tailwind-config.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0"></script>
+  <link rel="stylesheet" href="../css/styles.css" />
+
+  <script src="../js/config.js"></script>
+  <script src="../js/gate.js"></script>
+  <script>if (window.Gate) Gate.proteger("../index.html");</script>
+</head>
+<body class="bg-darkbg-base text-gray-200 font-sans antialiased overflow-x-hidden">
+
+  <div id="progress-bar"></div>
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-40 glass-panel border-b border-darkbg-border px-4 py-3 flex items-center justify-between">
+    <a href="guia.html" class="flex items-center gap-2">
+      <i data-lucide="arrow-left" class="w-5 h-5 text-terminal"></i>
+      <img src="../assets/svg/raven.svg" alt="Raven" class="w-8 h-8" />
+      <span class="font-mono font-bold text-base text-white tracking-wider hidden sm:inline">RAFA<span class="text-terminal">&amp;</span>RAVEN</span>
+    </a>
+    <span class="font-mono text-sm text-amber-light flex items-center gap-2"><i data-lucide="messages-square" class="w-4 h-4"></i> Fórum</span>
+  </header>
+
+  <main class="max-w-4xl mx-auto px-4 sm:px-6 pt-24 pb-20 space-y-10">
+
+    <section class="reveal-section text-center py-6">
+      <img src="../assets/svg/raven.svg" alt="Raven" class="w-20 h-20 mx-auto mb-4 animate-float" />
+      <h1 class="text-3xl sm:text-4xl font-extrabold font-mono text-white mb-3">Fórum da <span class="text-terminal text-glow-green">Comunidade</span></h1>
+      <p class="text-gray-400 max-w-xl mx-auto text-sm">Compartilhe ideias, dê dicas, mostre seu laboratório e peça ajuda. O fórum roda no GitHub Discussions do curso — entre com sua conta GitHub para participar.</p>
+    </section>
+
+    <!-- Categorias -->
+    <section class="reveal-section">
+      <h2 class="font-mono text-sm text-gray-400 uppercase tracking-wider mb-4">Categorias</h2>
+      <div id="forum-categorias" class="grid grid-cols-1 sm:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- Mural (Giscus) -->
+    <section class="reveal-section">
+      <h2 class="font-mono text-sm text-gray-400 uppercase tracking-wider mb-4">Mural da Comunidade</h2>
+      <div class="bg-darkbg-card border border-darkbg-border rounded-xl p-4 sm:p-6">
+        <div id="giscus-mount"></div>
+        <noscript class="text-xs text-gray-500">Ative o JavaScript para ver o fórum.</noscript>
+      </div>
+      <p class="text-[11px] text-gray-600 font-mono mt-3">
+        O mural é movido pelo Giscus (GitHub Discussions). Se aparecer vazio, o app do Giscus ainda precisa ser instalado no repositório — veja o README.
+      </p>
+    </section>
+  </main>
+
+  <footer class="border-t border-darkbg-border py-8 text-center text-xs text-gray-500 font-mono">
+    <p>Fórum · série <span class="text-amber">Rafa &amp; Raven</span></p>
+  </footer>
+
+  <script src="../js/main.js"></script>
+  <script src="../js/forum.js"></script>
+</body>
+</html>

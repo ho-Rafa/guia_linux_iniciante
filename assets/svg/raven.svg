@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200" width="200" height="200" role="img" aria-label="Raven, mascote do canal">
+  <defs>
+    <linearGradient id="rvFeather" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2a2a36"/>
+      <stop offset="1" stop-color="#15151d"/>
+    </linearGradient>
+  </defs>
+  <!-- corpo -->
+  <path d="M60 150 Q52 95 100 86 Q150 92 142 150 Q138 182 100 184 Q62 182 60 150 Z" fill="url(#rvFeather)" stroke="#08080d" stroke-width="5" stroke-linejoin="round"/>
+  <!-- asa -->
+  <path d="M132 108 Q170 104 184 128 L176 132 Q150 120 130 138 Z" fill="#15151d" stroke="#08080d" stroke-width="4" stroke-linejoin="round"/>
+  <path d="M138 118 Q160 114 176 126" stroke="#3a3a4c" stroke-width="4" fill="none"/>
+  <!-- cauda -->
+  <path d="M58 150 L26 168 L44 156 L22 160 L42 142 Z" fill="#15151d" stroke="#08080d" stroke-width="4" stroke-linejoin="round"/>
+  <!-- pés -->
+  <g stroke="#2E2E38" stroke-width="6" stroke-linecap="round">
+    <path d="M88 182 L84 196 M112 182 L116 196"/>
+  </g>
+  <!-- cabeça -->
+  <g>
+    <!-- espetos -->
+    <path d="M70 70 L52 56 L72 52 L58 34 L82 44 L80 20 L98 42 L110 22 L116 46 L138 36 L126 58 L146 62 L120 72 Z" fill="#08080d"/>
+    <circle cx="100" cy="72" r="42" fill="url(#rvFeather)" stroke="#08080d" stroke-width="5"/>
+    <!-- penas de brilho -->
+    <path d="M78 54 l10 8 M98 46 l8 10" stroke="#3a3a4c" stroke-width="4" stroke-linecap="round"/>
+    <!-- olhos -->
+    <circle cx="86" cy="70" r="15" fill="#fbfbfb" stroke="#08080d" stroke-width="3"/>
+    <circle cx="114" cy="70" r="15" fill="#fbfbfb" stroke="#08080d" stroke-width="3"/>
+    <circle cx="89" cy="72" r="6.5" fill="#101018"/>
+    <circle cx="111" cy="72" r="6.5" fill="#101018"/>
+    <circle cx="87" cy="69" r="2" fill="#fff"/>
+    <circle cx="109" cy="69" r="2" fill="#fff"/>
+    <!-- bico -->
+    <path d="M94 86 L100 104 L106 86 Q100 92 94 86 Z" fill="#5d5e6c" stroke="#08080d" stroke-width="3" stroke-linejoin="round"/>
+  </g>
+</svg>

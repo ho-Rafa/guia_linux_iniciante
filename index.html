@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guia Linux Iniciante · Rafa & Raven</title>
+  <meta name="description" content="Acesso de inscritos ao curso guiado de Linux para cibersegurança — Rafa & Raven." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="js/tailwind-config.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0"></script>
+  <link rel="stylesheet" href="css/styles.css" />
+  <script src="js/config.js"></script>
+  <script src="js/gate.js"></script>
+</head>
+<body class="bg-darkbg-base text-gray-200 font-sans antialiased">
+
+  <div id="gate-overlay" class="min-h-screen flex flex-col items-center justify-center px-4 py-10">
+
+    <img src="assets/svg/raven.svg" alt="Raven" class="w-28 h-28 mb-6 animate-float" />
+
+    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber/10 border border-amber/30 text-amber-light text-xs font-mono mb-5">
+      <i data-lucide="youtube" class="w-4 h-4"></i>
+      <span>ÁREA DE INSCRITOS</span>
+    </div>
+
+    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 font-mono text-center leading-tight">
+      GUIA LINUX <span class="text-terminal text-glow-green">INICIANTE</span>
+    </h1>
+    <p class="text-gray-400 max-w-md text-center text-sm mb-8">
+      Curso guiado de Linux para cibersegurança, da série <strong class="text-amber-light">Rafa &amp; Raven</strong>.
+      Digite a senha de acesso revelada nos vídeos do canal.
+    </p>
+
+    <!-- Formulário do portão -->
+    <form id="gate-form" class="w-full max-w-sm bg-darkbg-card border border-darkbg-border rounded-2xl p-6 shadow-2xl terminal-glow">
+      <label for="gate-input" class="block text-xs font-mono text-gray-400 mb-2">
+        <i data-lucide="lock" class="inline w-3.5 h-3.5 text-terminal"></i> Senha de acesso
+      </label>
+      <div class="flex items-center gap-2 bg-darkbg-base border border-gray-800 rounded-lg px-3 focus-within:border-terminal transition">
+        <span class="text-terminal font-mono text-sm">$</span>
+        <input id="gate-input" type="password" autocomplete="off" placeholder="••••••••" class="gate-input flex-1 bg-transparent py-3 text-white font-mono text-sm focus:outline-none" />
+        <button type="button" id="toggle-pass" class="text-gray-500 hover:text-white" title="Mostrar/ocultar">
+          <i data-lucide="eye" class="w-4 h-4"></i>
+        </button>
+      </div>
+      <p id="gate-error" class="hidden text-red-400 text-xs font-mono mt-2 flex items-center gap-1">
+        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Senha incorreta. Tente de novo.
+      </p>
+      <button type="submit" class="w-full mt-4 px-5 py-3 rounded-lg font-mono text-sm font-semibold bg-terminal text-black hover:bg-terminal-glow transition flex items-center justify-center gap-2">
+        <i data-lucide="log-in" class="w-4 h-4"></i> ENTRAR
+      </button>
+    </form>
+
+    <div class="mt-6 max-w-sm text-center">
+      <p id="gate-dica" class="text-[11px] text-gray-500 font-mono mb-3"></p>
+      <a id="yt-link" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-xs font-mono text-amber-light hover:text-amber transition">
+        <i data-lucide="youtube" class="w-4 h-4"></i> Ainda não é inscrito? Inscreva-se no canal
+      </a>
+    </div>
+
+    <p class="mt-10 text-[10px] text-gray-600 font-mono text-center max-w-xs">
+      Conteúdo educativo. O acesso por senha apenas evita entrada casual — não é segurança real.
+    </p>
+  </div>
+
+  <script>
+    // Preenche dica, link do YouTube e liga o formulário
+    (function () {
+      var C = window.SITE_CONFIG || {};
+      var dica = document.getElementById("gate-dica");
+      if (dica && C.acesso) dica.innerText = C.acesso.dica || "";
+      var yt = document.getElementById("yt-link");
+      if (yt && C.youtube) yt.href = C.youtube;
+
+      // Se já tem acesso, pula direto pro guia
+      if (window.Gate && Gate.temAcesso()) window.location.href = "pages/guia.html";
+
+      // Mostrar/ocultar senha
+      var input = document.getElementById("gate-input");
+      document.getElementById("toggle-pass").addEventListener("click", function () {
+        input.type = input.type === "password" ? "text" : "password";
+      });
+
+      // Ligar validação
+      if (window.Gate) Gate.ligarFormulario(
+        document.getElementById("gate-form"),
+        input,
+        document.getElementById("gate-error"),
+        "pages/guia.html"
+      );
+
+      if (window.lucide) lucide.createIcons();
+    })();
+  </script>
+</body>
+</html>

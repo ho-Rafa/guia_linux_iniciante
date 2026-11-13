@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="pt-BR" class="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Guia Linux Iniciante · Rafa & Raven</title>
+  <meta name="description" content="Curso guiado de Linux para cibersegurança, da série Rafa & Raven." />
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet" />
+
+  <script src="https://cdn.tailwindcss.com/3.4.16"></script>
+  <script src="../js/tailwind-config.js"></script>
+  <script src="https://unpkg.com/lucide@0.460.0"></script>
+  <link rel="stylesheet" href="../css/styles.css" />
+
+  <!-- Portão de acesso: redireciona se não estiver liberado -->
+  <script src="../js/config.js"></script>
+  <script src="../js/gate.js"></script>
+  <script>if (window.Gate) Gate.proteger("../index.html");</script>
+</head>
+<body class="bg-darkbg-base text-gray-200 font-sans selection:bg-terminal selection:text-black antialiased overflow-x-hidden">
+
+  <div id="progress-bar"></div>
+
+  <!-- Header -->
+  <header class="fixed top-0 left-0 right-0 z-40 glass-panel border-b border-darkbg-border px-4 py-3 flex items-center justify-between">
+    <div class="flex items-center gap-3">
+      <button id="toggle-sidebar-btn" class="p-2 rounded-lg bg-darkbg-card hover:bg-gray-800 text-terminal border border-darkbg-border transition-colors">
+        <i data-lucide="menu" class="w-5 h-5"></i>
+      </button>
+      <a href="guia.html" class="flex items-center gap-2">
+        <img src="../assets/svg/raven.svg" alt="Raven" class="w-8 h-8" />
+        <span class="font-mono font-bold text-base sm:text-lg text-white tracking-wider">RAFA<span class="text-terminal">&amp;</span>RAVEN</span>
+      </a>
+    </div>
+    <div class="flex items-center gap-2 sm:gap-3">
+      <a href="forum.html" class="flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono bg-amber/10 border border-amber/30 text-amber-light hover:bg-amber/20 transition">
+        <i data-lucide="messages-square" class="w-3.5 h-3.5"></i> <span class="hidden sm:inline">Fórum</span>
+      </a>
+      <button onclick="scrollToSection('sandbox')" class="hidden md:flex items-center gap-2 px-3 py-1.5 rounded-lg text-xs font-mono bg-terminal/10 border border-terminal/30 text-terminal hover:bg-terminal/20 transition">
+        <i data-lucide="play" class="w-3.5 h-3.5"></i> Sandbox
+      </button>
+      <button onclick="Gate.sair(); location.href='../index.html'" class="p-2 rounded-lg text-gray-400 hover:text-white border border-darkbg-border" title="Sair">
+        <i data-lucide="log-out" class="w-4 h-4"></i>
+      </button>
+    </div>
+  </header>
+
+  <!-- Sidebar -->
+  <aside id="sidebar" class="fixed top-0 left-0 bottom-0 w-72 bg-darkbg-card border-r border-darkbg-border z-50 transform -translate-x-full transition-transform duration-300 ease-in-out flex flex-col shadow-2xl">
+    <div class="p-4 border-b border-darkbg-border flex items-center justify-between">
+      <div class="flex items-center gap-2">
+        <i data-lucide="shield" class="w-5 h-5 text-amber"></i>
+        <span class="font-mono font-bold text-white text-sm">MENU DE MISSÕES</span>
+      </div>
+      <button id="close-sidebar-btn" class="p-1 rounded text-gray-400 hover:text-white">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+    </div>
+    <nav id="sidebar-nav" class="flex-1 overflow-y-auto p-3 space-y-1 font-mono text-xs">
+      <!-- Montado por JS a partir de data/course.js -->
+    </nav>
+    <div class="p-4 border-t border-darkbg-border bg-darkbg-base text-[11px] text-gray-400 font-mono">
+      <p>Hacking Ético • 80/20 Linux</p>
+      <p class="text-amber text-[10px] mt-0.5">Série Rafa &amp; Raven</p>
+    </div>
+  </aside>
+  <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-40 hidden"></div>
+
+  <!-- MAIN -->
+  <main class="max-w-5xl mx-auto px-4 sm:px-6 pt-24 pb-20 space-y-24">
+
+    <!-- HERO -->
+    <section class="reveal-section min-h-[70vh] flex flex-col justify-center items-center text-center py-12 relative">
+      <img src="../assets/svg/raven.svg" alt="Raven" class="w-24 h-24 mb-4 animate-float" />
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber/10 border border-amber/30 text-amber-light text-xs font-mono mb-6 accent-glow">
+        <i data-lucide="cpu" class="w-4 h-4"></i>
+        <span>CAPÍTULO 00: O DESPERTAR NO SHELL</span>
+      </div>
+      <h1 class="text-4xl sm:text-6xl font-extrabold tracking-tight text-white mb-6 font-mono leading-tight">
+        GUIA LINUX <br class="hidden sm:inline" />
+        <span class="text-terminal text-glow-green">INICIANTE</span>
+      </h1>
+      <p class="text-gray-300 max-w-2xl text-base sm:text-lg mb-8 leading-relaxed">
+        Bem-vindo ao portal do <strong class="text-amber-light">Rafa &amp; Raven</strong>. A rota <strong class="text-terminal">80/20</strong>: os 20% de Linux que entregam 80% dos resultados reais em cibersegurança. Aprenda, salve o comando e reproduza no seu terminal.
+      </p>
+      <div class="flex flex-wrap items-center justify-center gap-4">
+        <a href="#distro" class="px-6 py-3 rounded-lg font-mono text-sm font-semibold bg-terminal text-black hover:bg-terminal-glow shadow-lg transition-all transform hover:-translate-y-0.5 flex items-center gap-2">
+          <span>INICIAR A MISSÃO</span><i data-lucide="arrow-right" class="w-4 h-4"></i>
+        </a>
+        <a href="#sandbox" class="px-6 py-3 rounded-lg font-mono text-sm font-semibold bg-darkbg-card border border-darkbg-border text-gray-200 hover:border-amber hover:text-amber-light transition-all flex items-center gap-2">
+          <i data-lucide="terminal" class="w-4 h-4 text-terminal"></i><span>ABRIR TERMINAL</span>
+        </a>
+      </div>
+      <div class="mt-16 text-gray-500 font-mono text-xs animate-bounce flex flex-col items-center gap-1">
+        <span>Role para navegar na história</span>
+        <i data-lucide="chevron-down" class="w-4 h-4 text-terminal"></i>
+      </div>
+    </section>
+
+    <!-- 01 DISTRO -->
+    <section id="distro" class="reveal-section scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">01</span>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Qual Distro Escolher?</h2>
+      </div>
+      <p class="text-gray-400 mb-8 leading-relaxed">No universo Linux, a distro dita quais ferramentas estarão na ponta dos seus dedos. Com foco em segurança ofensiva, vá direto ao ponto.</p>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+        <div class="bg-darkbg-card rounded-xl p-6 border-2 border-terminal/50 relative terminal-glow">
+          <div class="absolute -top-3 right-4 px-3 py-0.5 rounded-full bg-terminal text-black text-[10px] font-mono font-extrabold tracking-wider uppercase">RECOMENDADO</div>
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-2.5 rounded-lg bg-terminal/10 border border-terminal/30 text-terminal"><i data-lucide="shield-alert" class="w-6 h-6"></i></div>
+            <h3 class="text-xl font-bold font-mono text-white">Kali Linux</h3>
+          </div>
+          <p class="text-xs text-gray-300 leading-relaxed mb-4">Padrão ouro para segurança ofensiva, mantido pela Offensive Security.</p>
+          <ul class="space-y-2 text-xs text-gray-400 font-mono">
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-terminal shrink-0 mt-0.5"></i> Centenas de ferramentas pré-instaladas.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-terminal shrink-0 mt-0.5"></i> Base Debian, fácil com <code class="text-terminal">apt</code>.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-terminal shrink-0 mt-0.5"></i> Comunidade e documentação enormes.</li>
+          </ul>
+        </div>
+        <div class="bg-darkbg-card rounded-xl p-6 border border-darkbg-border hover:border-gray-700 transition">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-2.5 rounded-lg bg-amber/10 border border-amber/30 text-amber"><i data-lucide="feather" class="w-6 h-6"></i></div>
+            <h3 class="text-xl font-bold font-mono text-white">Parrot OS</h3>
+          </div>
+          <p class="text-xs text-gray-300 leading-relaxed mb-4">Alternativa leve e amigável para máquinas mais modestas.</p>
+          <ul class="space-y-2 text-xs text-gray-400 font-mono">
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-amber shrink-0 mt-0.5"></i> Mais leve para hardware modesto.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-amber shrink-0 mt-0.5"></i> Bom para o dia a dia.</li>
+          </ul>
+        </div>
+        <div class="bg-darkbg-card rounded-xl p-6 border border-darkbg-border hover:border-gray-700 transition">
+          <div class="flex items-center gap-3 mb-4">
+            <div class="p-2.5 rounded-lg bg-gray-800 border border-gray-700 text-gray-300"><i data-lucide="box" class="w-6 h-6"></i></div>
+            <h3 class="text-xl font-bold font-mono text-white">Ubuntu</h3>
+          </div>
+          <p class="text-xs text-gray-300 leading-relaxed mb-4">Ideal para quem nunca usou Linux e quer estabilidade primeiro.</p>
+          <ul class="space-y-2 text-xs text-gray-400 font-mono">
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gray-400 shrink-0 mt-0.5"></i> Linux estável e popular.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-gray-400 shrink-0 mt-0.5"></i> Transição suave antes do Kali.</li>
+          </ul>
+        </div>
+      </div>
+      <div class="mt-6 bg-amber/10 border border-amber/30 rounded-xl p-5 flex items-start gap-4">
+        <img src="../assets/svg/raven.svg" alt="Raven" class="w-10 h-10 shrink-0" />
+        <div>
+          <h4 class="font-mono font-bold text-amber-light text-sm mb-1">Dica do Raven!</h4>
+          <p class="text-xs text-gray-300 leading-relaxed"><strong>Nunca instale o Kali direto no seu HD</strong> no começo. Use uma <strong class="text-white">Máquina Virtual (VM)</strong>: evita perder arquivos e permite desfazer desastres em segundos com <em>Snapshots</em>.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- 02 INSTALL -->
+    <section id="install" class="reveal-section scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">02</span>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Como Instalar em VM (o jeito seguro)</h2>
+      </div>
+      <p class="text-gray-400 mb-6 leading-relaxed text-sm">Siga este checklist para preparar seu laboratório isolado com VirtualBox e a ISO oficial.</p>
+      <div class="grid grid-cols-1 lg:grid-cols-12 gap-8">
+        <div class="lg:col-span-7 bg-darkbg-card rounded-xl p-6 border border-darkbg-border space-y-4 font-mono text-xs">
+          <div class="flex items-start gap-3"><span class="px-2 py-1 bg-terminal/20 text-terminal rounded font-bold">1</span><div><strong class="text-white text-sm block mb-0.5">Baixe o VirtualBox</strong><p class="text-gray-400 font-sans">Virtualização gratuita. Baixe do site oficial.</p></div></div>
+          <div class="flex items-start gap-3"><span class="px-2 py-1 bg-terminal/20 text-terminal rounded font-bold">2</span><div><strong class="text-white text-sm block mb-0.5">Baixe a ISO do Kali</strong><p class="text-gray-400 font-sans">Em <a href="https://www.kali.org/get-kali/" target="_blank" rel="noopener" class="text-terminal underline">kali.org/get-kali</a>, escolha <strong>Installer (amd64)</strong>.</p></div></div>
+          <div class="flex items-start gap-3"><span class="px-2 py-1 bg-terminal/20 text-terminal rounded font-bold">3</span><div><strong class="text-white text-sm block mb-0.5">Crie a VM</strong><p class="text-gray-400 font-sans">Tipo <em>Linux → Debian (64-bit)</em>.</p></div></div>
+          <div class="flex items-start gap-3"><span class="px-2 py-1 bg-terminal/20 text-terminal rounded font-bold">4</span><div><strong class="text-white text-sm block mb-0.5">Pós-instalação: atualize</strong><div class="bg-darkbg-terminal p-2.5 rounded border border-gray-800 flex items-center justify-between text-terminal mt-1"><code>sudo apt update &amp;&amp; sudo apt full-upgrade -y</code><button onclick="copyText('sudo apt update && sudo apt full-upgrade -y')" class="text-gray-500 hover:text-white" title="Copiar"><i data-lucide="copy" class="w-4 h-4"></i></button></div></div></div>
+          <div class="flex items-start gap-3"><span class="px-2 py-1 bg-amber/20 text-amber rounded font-bold">5</span><div><strong class="text-amber-light text-sm block mb-0.5">Tire um Snapshot já!</strong><p class="text-gray-400 font-sans">O Snapshot é um "ponto de restauração". Quebrou? Volte em 5 segundos.</p></div></div>
+        </div>
+        <div class="lg:col-span-5 bg-darkbg-card rounded-xl p-6 border border-darkbg-border flex flex-col justify-between">
+          <div>
+            <div class="flex items-center gap-2 mb-4"><i data-lucide="sliders" class="w-5 h-5 text-amber"></i><h3 class="font-mono font-bold text-white">Calculadora de Specs VM</h3></div>
+            <p class="text-xs text-gray-400 mb-6">Ajuste a RAM do seu PC para ver o tamanho recomendado da VM:</p>
+            <div class="space-y-4 font-mono text-xs">
+              <div>
+                <div class="flex justify-between text-gray-300 mb-1"><span>RAM do seu computador:</span><span id="ram-val" class="text-terminal font-bold">16 GB</span></div>
+                <input id="ram-slider" type="range" min="4" max="64" value="16" step="4" class="w-full accent-terminal bg-darkbg-base rounded cursor-pointer" />
+              </div>
+              <div class="p-4 rounded-lg bg-darkbg-base border border-gray-800 space-y-2 mt-4">
+                <div class="flex justify-between"><span class="text-gray-400">RAM para a VM:</span><span id="calc-vm-ram" class="text-terminal font-bold">4 GB a 8 GB (Ideal)</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Processadores:</span><span id="calc-vm-cpu" class="text-terminal font-bold">2 a 4 Núcleos</span></div>
+                <div class="flex justify-between"><span class="text-gray-400">Disco:</span><span id="calc-vm-hd" class="text-terminal font-bold">50 GB</span></div>
+              </div>
+            </div>
+          </div>
+          <div class="mt-4 pt-4 border-t border-gray-800 text-[11px] text-gray-500 font-mono">💡 Mínimo confortável: 8 GB RAM e 40 GB+ de disco.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 SHELL -->
+    <section id="terminal-concepts" class="reveal-section scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">03</span>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Como Funciona o Shell</h2>
+      </div>
+      <p class="text-gray-400 mb-6 leading-relaxed text-sm">No Kali, o shell padrão é o <strong class="text-terminal font-mono">bash</strong> — sua interface direta com o sistema.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl bg-darkbg-card border border-darkbg-border flex items-start gap-3"><i data-lucide="file" class="w-5 h-5 text-terminal shrink-0 mt-0.5"></i><div><strong class="text-white text-sm">Tudo é arquivo</strong><p class="text-gray-400 font-sans mt-1">Diretórios, discos e até rede são arquivos numa árvore a partir do root (<code class="text-terminal">/</code>).</p></div></div>
+        <div class="p-4 rounded-xl bg-darkbg-card border border-darkbg-border flex items-start gap-3"><i data-lucide="user-check" class="w-5 h-5 text-amber shrink-0 mt-0.5"></i><div><strong class="text-white text-sm">Root vs sudo</strong><p class="text-gray-400 font-sans mt-1"><code class="text-amber-light">sudo</code> roda com poderes de administrador. Evite usar root pra tudo.</p></div></div>
+        <div class="p-4 rounded-xl bg-darkbg-card border border-darkbg-border flex items-start gap-3"><i data-lucide="zap" class="w-5 h-5 text-terminal shrink-0 mt-0.5"></i><div><strong class="text-white text-sm">Atalhos essenciais</strong><p class="text-gray-400 font-sans mt-1"><code class="text-terminal">TAB</code> autocompleta, <code class="text-terminal">Ctrl+C</code> interrompe, <code class="text-terminal">clear</code> limpa.</p></div></div>
+        <div class="p-4 rounded-xl bg-darkbg-card border border-darkbg-border flex items-start gap-3"><i data-lucide="code" class="w-5 h-5 text-amber shrink-0 mt-0.5"></i><div><strong class="text-white text-sm">Estrutura padrão</strong><p class="text-gray-400 font-sans mt-1">Sempre <code class="text-white">comando -opções argumento</code> (ex.: <code class="text-terminal">ls -la /home</code>).</p></div></div>
+      </div>
+    </section>
+
+    <!-- 04 COMMANDS + SANDBOX -->
+    <section id="commands" class="reveal-section scroll-mt-24 space-y-8">
+      <div>
+        <div class="flex items-center gap-3 mb-2">
+          <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">04</span>
+          <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Comandos Essenciais 80/20</h2>
+        </div>
+        <p class="text-gray-400 text-sm">Domine esta lista antes de tocar em qualquer ferramenta complexa. Filtre pela busca.</p>
+      </div>
+      <div class="bg-darkbg-card rounded-xl p-4 border border-darkbg-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="relative w-full sm:w-80">
+          <i data-lucide="search" class="w-4 h-4 text-gray-400 absolute left-3 top-3"></i>
+          <input id="command-search" type="text" placeholder="Filtrar (ex.: cd, ls, rede)..." class="w-full bg-darkbg-base border border-gray-800 rounded-lg pl-9 pr-4 py-2 text-xs font-mono text-white focus:outline-none focus:border-terminal" />
+        </div>
+        <div class="flex gap-2 text-xs font-mono w-full sm:w-auto overflow-x-auto pb-1 sm:pb-0">
+          <button onclick="filterCmds('all', this)" class="cmd-tag-btn px-3 py-1.5 rounded-lg bg-terminal/10 text-terminal border border-terminal/30">Todos</button>
+          <button onclick="filterCmds('file', this)" class="cmd-tag-btn px-3 py-1.5 rounded-lg bg-darkbg-base text-gray-400 border border-gray-800 hover:text-white">Arquivos</button>
+          <button onclick="filterCmds('sys', this)" class="cmd-tag-btn px-3 py-1.5 rounded-lg bg-darkbg-base text-gray-400 border border-gray-800 hover:text-white">Sistema</button>
+          <button onclick="filterCmds('net', this)" class="cmd-tag-btn px-3 py-1.5 rounded-lg bg-darkbg-base text-gray-400 border border-gray-800 hover:text-white">Rede</button>
+        </div>
+      </div>
+      <div class="overflow-x-auto rounded-xl border border-darkbg-border bg-darkbg-card">
+        <table class="w-full text-left font-mono text-xs border-collapse">
+          <thead>
+            <tr class="bg-darkbg-base text-gray-400 border-b border-darkbg-border uppercase text-[10px] tracking-wider">
+              <th class="p-3.5">Comando</th><th class="p-3.5">O que faz</th><th class="p-3.5">Exemplo</th><th class="p-3.5 text-right">Ação</th>
+            </tr>
+          </thead>
+          <tbody id="command-tbody" class="text-gray-300"></tbody>
+        </table>
+      </div>
+
+      <!-- SANDBOX -->
+      <div id="sandbox" class="scroll-mt-24 pt-4">
+        <div class="bg-darkbg-terminal rounded-xl border border-terminal/40 shadow-2xl overflow-hidden terminal-glow">
+          <div class="bg-darkbg-card px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="flex gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span><span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span><span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span></div>
+              <span class="text-xs font-mono text-gray-400 ml-2">kali@sandbox: ~</span>
+            </div>
+            <div class="flex items-center gap-2 text-[11px] font-mono text-gray-400"><span class="text-terminal">● Modo interativo</span></div>
+          </div>
+          <div id="terminal-screen" class="p-4 font-mono text-xs text-gray-200 h-72 overflow-y-auto space-y-2 leading-relaxed">
+            <div class="text-gray-400">Kali Linux (Sandbox Simulador)<br />Digite <span class="text-terminal font-bold">help</span> para ver os comandos.</div>
+          </div>
+          <form id="terminal-form" class="p-3 bg-darkbg-base border-t border-gray-800 flex items-center gap-2 font-mono text-xs">
+            <span class="text-terminal font-bold shrink-0">kali@lab:~$</span>
+            <input id="terminal-input" type="text" autocomplete="off" placeholder="Digite um comando (ex.: pwd, ls, help)..." class="w-full bg-transparent text-white focus:outline-none font-mono" />
+            <button type="submit" class="px-3 py-1 rounded bg-terminal text-black font-bold text-[11px] hover:bg-terminal-glow">EXECUTAR</button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- 05 WARNINGS -->
+    <section id="warnings" class="reveal-section scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">05</span>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Cuidados &amp; Ética</h2>
+      </div>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-darkbg-card rounded-xl p-6 border border-darkbg-border space-y-3">
+          <h3 class="font-mono font-bold text-terminal flex items-center gap-2 text-base"><i data-lucide="shield-check" class="w-5 h-5"></i> Regras de Ouro</h3>
+          <ul class="space-y-2 text-xs text-gray-300 leading-relaxed">
+            <li class="flex items-start gap-2"><i data-lucide="alert-octagon" class="w-4 h-4 text-red-400 shrink-0 mt-0.5"></i> <strong>Sem autorização = crime:</strong> só teste em redes/sites com permissão por escrito.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-terminal shrink-0 mt-0.5"></i> <strong>Use Snapshots</strong> antes de instalar pacotes desconhecidos.</li>
+            <li class="flex items-start gap-2"><i data-lucide="check" class="w-4 h-4 text-terminal shrink-0 mt-0.5"></i> <strong>Atualize sempre</strong> com <code class="text-terminal font-mono">apt update &amp;&amp; apt full-upgrade</code>.</li>
+          </ul>
+        </div>
+        <div class="bg-darkbg-card rounded-xl p-6 border border-red-900/30 space-y-3">
+          <h3 class="font-mono font-bold text-red-400 flex items-center gap-2 text-base"><i data-lucide="alert-triangle" class="w-5 h-5"></i> Comandos Perigosos</h3>
+          <p class="text-xs text-gray-400">Extrema cautela com privilégios elevados:</p>
+          <div class="bg-darkbg-base p-3 rounded-lg border border-red-900/40 text-xs font-mono space-y-2">
+            <p class="text-red-400"><code>rm -rf /</code><span class="text-gray-500 font-sans text-[11px] block">Apaga todo o sistema sem confirmação!</span></p>
+            <p class="text-yellow-400"><code>chmod -R 777 /</code><span class="text-gray-500 font-sans text-[11px] block">Destrói as permissões de segurança.</span></p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 06 TOOLS -->
+    <section id="tools" class="reveal-section scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">06</span>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Ferramentas de Pentest</h2>
+      </div>
+      <p class="text-gray-400 mb-6 text-sm">Não aprenda tudo de uma vez. Siga a ordem do iniciante ao avançado:</p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 font-mono text-xs">
+        <div class="p-4 rounded-xl bg-darkbg-card border border-terminal/40 hover:border-terminal transition"><div class="flex items-center justify-between mb-2"><span class="px-2 py-0.5 rounded bg-terminal/20 text-terminal font-bold">1º ESSENCIAL</span><i data-lucide="radar" class="w-4 h-4 text-terminal"></i></div><strong class="text-white text-sm block mb-1">Nmap</strong><p class="text-gray-400 font-sans text-[11px]">Varredura de portas e mapa de rede.</p></div>
+        <div class="p-4 rounded-xl bg-darkbg-card border border-terminal/40 hover:border-terminal transition"><div class="flex items-center justify-between mb-2"><span class="px-2 py-0.5 rounded bg-terminal/20 text-terminal font-bold">2º WEB</span><i data-lucide="globe" class="w-4 h-4 text-terminal"></i></div><strong class="text-white text-sm block mb-1">Burp Suite</strong><p class="text-gray-400 font-sans text-[11px]">Proxy que intercepta requisições HTTP/HTTPS.</p></div>
+        <div class="p-4 rounded-xl bg-darkbg-card border border-darkbg-border hover:border-amber transition"><div class="flex items-center justify-between mb-2"><span class="px-2 py-0.5 rounded bg-amber/20 text-amber font-bold">3º REDES</span><i data-lucide="activity" class="w-4 h-4 text-amber"></i></div><strong class="text-white text-sm block mb-1">Wireshark</strong><p class="text-gray-400 font-sans text-[11px]">Análise profunda de pacotes.</p></div>
+        <div class="p-4 rounded-xl bg-darkbg-card border border-darkbg-border hover:border-amber transition"><div class="flex items-center justify-between mb-2"><span class="px-2 py-0.5 rounded bg-amber/20 text-amber font-bold">4º ENUM</span><i data-lucide="folder-search" class="w-4 h-4 text-amber"></i></div><strong class="text-white text-sm block mb-1">Gobuster</strong><p class="text-gray-400 font-sans text-[11px]">Força bruta em diretórios e subdomínios.</p></div>
+      </div>
+      <div class="mt-8 bg-darkbg-card p-6 rounded-xl border border-darkbg-border flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div><h4 class="font-mono font-bold text-white text-sm mb-1">Pratique em laboratórios legais</h4><p class="text-xs text-gray-400">Treine com segurança em plataformas gamificadas.</p></div>
+        <div class="flex items-center gap-3 font-mono text-xs">
+          <a href="https://tryhackme.com" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg bg-terminal/10 border border-terminal/40 text-terminal hover:bg-terminal/20 transition">TryHackMe</a>
+          <a href="https://www.hackthebox.com" target="_blank" rel="noopener" class="px-4 py-2 rounded-lg bg-amber/10 border border-amber/40 text-amber-light hover:bg-amber/20 transition">Hack The Box</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 07 ROADMAP -->
+    <section id="roadmap" class="reveal-section scroll-mt-24">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="px-3 py-1 rounded bg-amber/10 border border-amber/40 text-amber-light font-mono font-bold text-xs">07</span>
+        <h2 class="text-2xl sm:text-3xl font-bold font-mono text-white">Trilha de Aprendizado</h2>
+      </div>
+      <div class="relative border-l-2 border-darkbg-border ml-3 space-y-6 pl-6 font-mono text-xs">
+        <div class="relative"><span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-terminal"></span><strong class="text-white text-sm">1. Fundamentos de Linux</strong><p class="text-gray-400 font-sans mt-1">Navegação, arquivos, permissões, pacotes (capítulos 01–05).</p></div>
+        <div class="relative"><span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-terminal"></span><strong class="text-white text-sm">2. Redes na prática</strong><p class="text-gray-400 font-sans mt-1">IP, rotas, DNS, descoberta de dispositivos (base dos EP09–EP11).</p></div>
+        <div class="relative"><span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-amber"></span><strong class="text-white text-sm">3. Ferramentas de pentest</strong><p class="text-gray-400 font-sans mt-1">Nmap, Burp, Wireshark — sempre em laboratório autorizado.</p></div>
+        <div class="relative"><span class="absolute -left-[31px] top-0 w-4 h-4 rounded-full bg-amber"></span><strong class="text-white text-sm">4. Prática contínua</strong><p class="text-gray-400 font-sans mt-1">TryHackMe / Hack The Box e o fórum da comunidade.</p></div>
+      </div>
+      <div class="mt-8 bg-gradient-to-r from-terminal/10 to-amber/10 border border-darkbg-border rounded-xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div class="flex items-center gap-4">
+          <img src="../assets/svg/raven.svg" alt="Raven" class="w-12 h-12" />
+          <div><h4 class="font-mono font-bold text-white text-sm">Tem dúvida ou quer compartilhar?</h4><p class="text-xs text-gray-400">Entra no fórum da comunidade Rafa &amp; Raven.</p></div>
+        </div>
+        <a href="forum.html" class="px-5 py-2.5 rounded-lg font-mono text-sm font-semibold bg-amber text-black hover:bg-amber-light transition flex items-center gap-2"><i data-lucide="messages-square" class="w-4 h-4"></i> Abrir o Fórum</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="border-t border-darkbg-border py-8 text-center text-xs text-gray-500 font-mono">
+    <p>Guia Linux Iniciante · série <span class="text-amber">Rafa &amp; Raven</span></p>
+    <p class="mt-1">Conteúdo educativo. Só teste o que é seu ou com autorização por escrito.</p>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="../data/course.js"></script>
+  <script src="../js/commands.js"></script>
+  <script src="../js/terminal.js"></script>
+  <script src="../js/main.js"></script>
+  <script>
+    // Menu lateral dinâmico a partir de data/course.js (expansão fácil)
+    (function () {
+      var nav = document.getElementById("sidebar-nav");
+      if (!nav || !window.COURSE) return;
+      var html = '<div class="px-3 py-2 text-gray-500 font-semibold uppercase text-[10px]">Tópicos da Jornada</div>';
+      COURSE.capitulos.forEach(function (c) {
+        html += '<a href="#' + c.id + '" onclick="closeSidebar()" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-gray-300 hover:text-terminal hover:bg-darkbg-base border border-transparent hover:border-terminal/20 transition">' +
+          '<span class="w-5 text-amber font-bold">' + c.num + "</span><span>" + c.titulo + "</span></a>";
+      });
+      html += '<div class="pt-4 px-3 py-2 text-gray-500 font-semibold uppercase text-[10px]">Interativo</div>';
+      (COURSE.interativo || []).forEach(function (c) {
+        html += '<a href="#' + c.id + '" onclick="closeSidebar()" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-terminal bg-terminal/10 border border-terminal/30 transition">' +
+          '<i data-lucide="' + c.icone + '" class="w-4 h-4"></i><span>' + c.titulo + "</span></a>";
+      });
+      html += '<div class="pt-4"><a href="forum.html" class="flex items-center gap-2.5 px-3 py-2.5 rounded-lg text-amber-light bg-amber/10 border border-amber/30 transition"><i data-lucide="messages-square" class="w-4 h-4"></i><span>Fórum da Comunidade</span></a></div>';
+      nav.innerHTML = html;
+      if (window.lucide) lucide.createIcons();
+    })();
+
+    // Calculadora de specs VM
+    (function () {
+      var s = document.getElementById("ram-slider"), v = document.getElementById("ram-val");
+      var r = document.getElementById("calc-vm-ram"), c = document.getElementById("calc-vm-cpu"), h = document.getElementById("calc-vm-hd");
+      if (!s) return;
+      s.addEventListener("input", function (e) {
+        var val = parseInt(e.target.value);
+        v.innerText = val + " GB";
+        if (val <= 8) { r.innerText = "2 GB a 4 GB"; c.innerText = "2 Núcleos"; h.innerText = "40 GB"; }
+        else if (val <= 16) { r.innerText = "4 GB a 8 GB (Ideal)"; c.innerText = "2 a 4 Núcleos"; h.innerText = "50 GB"; }
+        else { r.innerText = "8 GB a 16 GB (Excelente)"; c.innerText = "4+ Núcleos"; h.innerText = "60 GB+"; }
+      });
+    })();
+  </script>
+</body>
+</html>

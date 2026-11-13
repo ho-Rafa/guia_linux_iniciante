@@ -1,0 +1,83 @@
+/* ===========================================================
+   Guia Linux Iniciante — estilos personalizados (Rafa & Raven)
+   Tema base "terminal hacker" (verde) + âmbar quente do canal.
+   Tailwind entra pelo CDN; aqui ficam efeitos e componentes próprios.
+   =========================================================== */
+
+:root {
+  --terminal: #1cd959;
+  --terminal-glow: #00ff66;
+  --amber: #f2b23c;
+  --amber-light: #ffd37a;
+  --bg-base: #0b0f12;
+  --bg-card: #131920;
+  --bg-border: #1f2937;
+}
+
+/* Scrollbar */
+::-webkit-scrollbar { width: 8px; height: 8px; }
+::-webkit-scrollbar-track { background: var(--bg-base); }
+::-webkit-scrollbar-thumb { background: var(--bg-border); border-radius: 4px; }
+::-webkit-scrollbar-thumb:hover { background: var(--terminal); }
+
+/* Glows */
+.terminal-glow { box-shadow: 0 0 25px -5px rgba(28, 217, 89, 0.15); }
+.accent-glow { box-shadow: 0 0 25px -5px rgba(242, 178, 60, 0.28); }
+.text-glow-green { text-shadow: 0 0 10px rgba(28, 217, 89, 0.5); }
+.text-glow-amber { text-shadow: 0 0 10px rgba(242, 178, 60, 0.5); }
+
+/* Barra de progresso de rolagem */
+#progress-bar {
+  width: 0%;
+  height: 3px;
+  background: linear-gradient(90deg, var(--terminal) 0%, var(--amber) 100%);
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 100;
+  transition: width 0.1s linear;
+}
+
+/* Glassmorphism */
+.glass-panel {
+  background: rgba(19, 25, 32, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+/* Reveal ao rolar */
+.reveal-section {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+}
+.reveal-section.visible { opacity: 1; transform: translateY(0); }
+
+/* Cursor piscando do terminal */
+.caret-blink::after {
+  content: "█";
+  animation: blink 1s infinite;
+  color: var(--terminal);
+  margin-left: 2px;
+}
+@keyframes blink { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+
+/* Flutuação suave do mascote */
+@keyframes float { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-8px); } }
+.animate-float { animation: float 4s ease-in-out infinite; }
+
+/* ---------- Portão de acesso (index) ---------- */
+#gate-overlay { background: radial-gradient(1200px 600px at 50% -10%, rgba(28,217,89,0.08), transparent 60%), var(--bg-base); }
+.gate-input {
+  letter-spacing: 0.12em;
+}
+.gate-shake { animation: shake 0.35s; }
+@keyframes shake {
+  0%, 100% { transform: translateX(0); }
+  25% { transform: translateX(-8px); }
+  75% { transform: translateX(8px); }
+}
+
+/* Cartões de categoria do fórum */
+.forum-card { transition: transform 0.15s ease, border-color 0.15s ease; }
+.forum-card:hover { transform: translateY(-3px); border-color: rgba(28,217,89,0.4); }
