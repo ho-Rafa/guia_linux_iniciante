@@ -46,13 +46,18 @@
     sair: function () {
       try { localStorage.removeItem(KEY); sessionStorage.removeItem(KEY); } catch (e) {}
     },
+    // Confere uma senha; se bater, libera o acesso. Retorna Promise<boolean>.
+    tentar: async function (senha) {
+      var hash = await sha256(senha || "");
+      if (hash === CFG.senhaSha256) { salvarAcesso(); return true; }
+      return false;
+    },
     // Liga o formulário do portão (index.html)
     ligarFormulario: function (form, input, erroEl, destino) {
+      var self = this;
       form.addEventListener("submit", async function (e) {
         e.preventDefault();
-        var hash = await sha256(input.value);
-        if (hash === CFG.senhaSha256) {
-          salvarAcesso();
+        if (await self.tentar(input.value)) {
           window.location.href = destino || "pages/guia.html";
         } else {
           if (erroEl) erroEl.classList.remove("hidden");

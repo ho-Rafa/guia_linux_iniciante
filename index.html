@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Guia Linux Iniciante · Rafa & Raven</title>
-  <meta name="description" content="Acesso de inscritos ao curso guiado de Linux para cibersegurança — Rafa & Raven." />
+  <title>Desafio de Acesso · Guia Linux Iniciante · Rafa & Raven</title>
+  <meta name="description" content="Descubra a senha e invada o Guia Linux Iniciante — um mini-desafio de cibersegurança da série Rafa & Raven." />
 
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -19,81 +19,112 @@
 </head>
 <body class="bg-darkbg-base text-gray-200 font-sans antialiased">
 
-  <div id="gate-overlay" class="min-h-screen flex flex-col items-center justify-center px-4 py-10">
+  <div id="progress-bar"></div>
 
-    <img src="assets/svg/raven.svg" alt="Raven" class="w-28 h-28 mb-6 animate-float" />
+  <main class="max-w-6xl mx-auto px-4 sm:px-6 py-8 sm:py-12">
 
-    <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-amber/10 border border-amber/30 text-amber-light text-xs font-mono mb-5">
-      <i data-lucide="youtube" class="w-4 h-4"></i>
-      <span>ÁREA DE INSCRITOS</span>
-    </div>
-
-    <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 font-mono text-center leading-tight">
-      GUIA LINUX <span class="text-terminal text-glow-green">INICIANTE</span>
-    </h1>
-    <p class="text-gray-400 max-w-md text-center text-sm mb-8">
-      Curso guiado de Linux para cibersegurança, da série <strong class="text-amber-light">Rafa &amp; Raven</strong>.
-      Digite a senha de acesso revelada nos vídeos do canal.
-    </p>
-
-    <!-- Formulário do portão -->
-    <form id="gate-form" class="w-full max-w-sm bg-darkbg-card border border-darkbg-border rounded-2xl p-6 shadow-2xl terminal-glow">
-      <label for="gate-input" class="block text-xs font-mono text-gray-400 mb-2">
-        <i data-lucide="lock" class="inline w-3.5 h-3.5 text-terminal"></i> Senha de acesso
-      </label>
-      <div class="flex items-center gap-2 bg-darkbg-base border border-gray-800 rounded-lg px-3 focus-within:border-terminal transition">
-        <span class="text-terminal font-mono text-sm">$</span>
-        <input id="gate-input" type="password" autocomplete="off" placeholder="••••••••" class="gate-input flex-1 bg-transparent py-3 text-white font-mono text-sm focus:outline-none" />
-        <button type="button" id="toggle-pass" class="text-gray-500 hover:text-white" title="Mostrar/ocultar">
-          <i data-lucide="eye" class="w-4 h-4"></i>
-        </button>
+    <!-- Cabeçalho -->
+    <header class="flex flex-col items-center text-center mb-8">
+      <img src="assets/svg/raven.svg" alt="Raven" class="w-20 h-20 mb-3 animate-float" />
+      <div class="inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full bg-terminal/10 border border-terminal/30 text-terminal text-xs font-mono mb-4 terminal-glow">
+        <i data-lucide="flag" class="w-4 h-4"></i>
+        <span>DESAFIO DE ACESSO · CAPÍTULO 00</span>
       </div>
-      <p id="gate-error" class="hidden text-red-400 text-xs font-mono mt-2 flex items-center gap-1">
-        <i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Senha incorreta. Tente de novo.
+      <h1 class="text-3xl sm:text-5xl font-extrabold tracking-tight text-white mb-3 font-mono leading-tight">
+        HACKEIE A <span class="text-terminal text-glow-green">SENHA</span>
+      </h1>
+      <p class="text-gray-400 max-w-2xl text-sm sm:text-base">
+        Bem-vindo ao <strong class="text-amber-light">Guia Linux Iniciante</strong> do canal Rafa &amp; Raven.
+        Antes de entrar, um gostinho de cibersegurança: use o terminal, descubra a <strong class="text-terminal">frase-senha</strong> e faça login.
+        O site é aberto — isto aqui é só diversão pra você já começar hackeando (de boa).
       </p>
-      <button type="submit" class="w-full mt-4 px-5 py-3 rounded-lg font-mono text-sm font-semibold bg-terminal text-black hover:bg-terminal-glow transition flex items-center justify-center gap-2">
-        <i data-lucide="log-in" class="w-4 h-4"></i> ENTRAR
-      </button>
-    </form>
+    </header>
 
-    <div class="mt-6 max-w-sm text-center">
-      <p id="gate-dica" class="text-[11px] text-gray-500 font-mono mb-3"></p>
-      <a id="yt-link" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-2 text-xs font-mono text-amber-light hover:text-amber transition">
-        <i data-lucide="youtube" class="w-4 h-4"></i> Ainda não é inscrito? Inscreva-se no canal
-      </a>
+    <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+
+      <!-- Terminal do desafio (SandBox) -->
+      <section class="lg:col-span-7">
+        <div class="bg-darkbg-terminal rounded-xl border border-terminal/40 shadow-2xl overflow-hidden terminal-glow">
+          <div class="bg-darkbg-card px-4 py-3 border-b border-gray-800 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <div class="flex gap-1.5"><span class="w-3 h-3 rounded-full bg-red-500 inline-block"></span><span class="w-3 h-3 rounded-full bg-yellow-500 inline-block"></span><span class="w-3 h-3 rounded-full bg-green-500 inline-block"></span></div>
+              <span class="text-xs font-mono text-gray-400 ml-2">root@guia: ~/desafio</span>
+            </div>
+            <span class="text-[11px] font-mono text-terminal">● SandBox</span>
+          </div>
+          <div id="chal-screen" class="p-4 font-mono text-xs text-gray-200 h-80 sm:h-96 overflow-y-auto space-y-1.5 leading-relaxed"></div>
+          <form id="chal-form" class="p-3 bg-darkbg-base border-t border-gray-800 flex items-center gap-2 font-mono text-xs">
+            <span class="text-terminal font-bold shrink-0">root@guia:~$</span>
+            <input id="chal-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="digite 'ajuda' e dê Enter..." class="w-full bg-transparent text-white focus:outline-none font-mono" />
+            <button type="submit" class="px-3 py-1 rounded bg-terminal text-black font-bold text-[11px] hover:bg-terminal-glow">RUN</button>
+          </form>
+        </div>
+      </section>
+
+      <!-- Tutorial + Login -->
+      <section class="lg:col-span-5 space-y-6">
+
+        <!-- Tutorial -->
+        <div class="bg-darkbg-card rounded-xl p-5 border border-darkbg-border">
+          <h2 class="font-mono font-bold text-white text-sm mb-3 flex items-center gap-2">
+            <i data-lucide="book-open" class="w-4 h-4 text-amber"></i> Como tentar "hackear"
+          </h2>
+          <ol class="space-y-2.5 text-xs text-gray-300 font-mono">
+            <li class="flex gap-2.5"><span class="text-amber font-bold">1</span> No terminal, digite <code class="text-terminal">ajuda</code> para ver os comandos.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">2</span> Liste os arquivos com <code class="text-terminal">ls</code> e leia as pistas: <code class="text-terminal">cat pistas.txt</code>.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">3</span> Espie o hash: <code class="text-terminal">cat .senha.sha256</code>.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">4</span> Monte a frase-senha das pistas — ou rode <code class="text-terminal">quebrar</code> pra ver o ataque de dicionário.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">5</span> Entre com <code class="text-terminal">login &lt;senha&gt;</code> ou use a caixa abaixo.</li>
+          </ol>
+          <p class="text-[11px] text-gray-500 mt-3">Dica honesta: a senha é fraca de propósito — você vai aprender por que isso é ruim lá dentro.</p>
+        </div>
+
+        <!-- Login -->
+        <form id="gate-form" class="bg-darkbg-card border border-terminal/30 rounded-xl p-5 terminal-glow">
+          <label for="gate-input" class="block text-xs font-mono text-gray-400 mb-2">
+            <i data-lucide="key-round" class="inline w-3.5 h-3.5 text-terminal"></i> Faça login com a senha que você descobriu
+          </label>
+          <div class="flex items-center gap-2 bg-darkbg-base border border-gray-800 rounded-lg px-3 focus-within:border-terminal transition">
+            <span class="text-terminal font-mono text-sm">$</span>
+            <input id="gate-input" type="password" autocomplete="off" placeholder="frase-senha..." class="gate-input flex-1 bg-transparent py-3 text-white font-mono text-sm focus:outline-none" />
+            <button type="button" id="toggle-pass" class="text-gray-500 hover:text-white" title="Mostrar/ocultar"><i data-lucide="eye" class="w-4 h-4"></i></button>
+          </div>
+          <p id="gate-error" class="hidden text-red-400 text-xs font-mono mt-2 flex items-center gap-1"><i data-lucide="x-circle" class="w-3.5 h-3.5"></i> Senha incorreta. Volte às pistas no terminal.</p>
+          <button type="submit" class="w-full mt-4 px-5 py-3 rounded-lg font-mono text-sm font-semibold bg-terminal text-black hover:bg-terminal-glow transition flex items-center justify-center gap-2">
+            <i data-lucide="log-in" class="w-4 h-4"></i> INVADIR / ENTRAR
+          </button>
+          <div class="mt-3 text-center">
+            <a id="yt-link" href="#" target="_blank" rel="noopener" class="inline-flex items-center gap-1.5 text-[11px] font-mono text-amber-light hover:text-amber transition">
+              <i data-lucide="youtube" class="w-3.5 h-3.5"></i> A senha também sai nos vídeos do canal
+            </a>
+          </div>
+        </form>
+      </section>
     </div>
 
-    <p class="mt-10 text-[10px] text-gray-600 font-mono text-center max-w-xs">
-      Conteúdo educativo. O acesso por senha apenas evita entrada casual — não é segurança real.
+    <p class="mt-10 text-[10px] text-gray-600 font-mono text-center max-w-2xl mx-auto">
+      Desafio educativo e de brincadeira, feito na própria senha deste site. Pratique segurança ofensiva só no que é seu ou com autorização por escrito.
     </p>
-  </div>
+  </main>
 
+  <script src="js/challenge.js"></script>
   <script>
-    // Preenche dica, link do YouTube e liga o formulário
     (function () {
       var C = window.SITE_CONFIG || {};
-      var dica = document.getElementById("gate-dica");
-      if (dica && C.acesso) dica.innerText = C.acesso.dica || "";
       var yt = document.getElementById("yt-link");
       if (yt && C.youtube) yt.href = C.youtube;
 
-      // Se já tem acesso, pula direto pro guia
+      // Já tem acesso? pula direto pro guia.
       if (window.Gate && Gate.temAcesso()) window.location.href = "pages/guia.html";
 
-      // Mostrar/ocultar senha
       var input = document.getElementById("gate-input");
       document.getElementById("toggle-pass").addEventListener("click", function () {
         input.type = input.type === "password" ? "text" : "password";
       });
-
-      // Ligar validação
       if (window.Gate) Gate.ligarFormulario(
-        document.getElementById("gate-form"),
-        input,
-        document.getElementById("gate-error"),
-        "pages/guia.html"
+        document.getElementById("gate-form"), input,
+        document.getElementById("gate-error"), "pages/guia.html"
       );
-
       if (window.lucide) lucide.createIcons();
     })();
   </script>
