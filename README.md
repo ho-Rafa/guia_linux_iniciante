@@ -31,13 +31,26 @@ site/
 
 ## Rodar localmente
 
-Qualquer servidor estático serve. Exemplos:
+Qualquer servidor estático serve. **Dentro da pasta `site/`** (onde está o `index.html`),
+aponte para a pasta atual com `.`:
+
+```bash
+npx http-server . -p 4178 -c-1
+```
+
+Se estiver na pasta de cima (`historyDark/`), passe o nome da pasta:
 
 ```bash
 npx http-server site -p 4178 -c-1
 ```
 
+> Erro `404 "Not found"` em `GET /` quase sempre é diretório errado: rodar `npx http-server site`
+> de **dentro** de `site/` faz ele procurar `site/site/` (que não existe). Use `.` nesse caso.
+
 Depois abra `http://127.0.0.1:4178/`. (Abrir o `index.html` direto pelo `file://` não roda o JS direito — use um servidor.)
+
+Alternativa no VS Code: instale a extensão **Live Server**, clique com o botão direito no
+`index.html` e escolha **"Open with Live Server"**.
 
 ## 1) Acesso só para inscritos (senha única)
 
