@@ -13,8 +13,8 @@
   var SIZE = 52;          // tamanho exibido do Raven (px)
   var CELL = 64;          // tamanho da célula na folha
   var COLS = 8;           // direções por linha
-  var BASE_SPEED = 6.5;   // px por quadro (~60fps): velocidade QUASE CONSTANTE do Raven
-  var MAX_SPEED = 16;     // teto quando está muito longe
+  var BASE_SPEED = 3.25;  // px por quadro (~60fps): velocidade QUASE CONSTANTE do Raven
+  var MAX_SPEED = 8;      // teto quando está muito longe
   var FAR_ACCEL = 0.02;   // aceleração leve só quando a distância passa de ~1 tela
   var FLAP_MS = 200;      // troca de frame da asa (maior = batida mais calma)
   var SLEEP_MS = 6000;    // tempo pousado até começar a dormir
