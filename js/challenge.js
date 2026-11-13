@@ -1,8 +1,8 @@
 /*
  * Terminal de DESAFIO da tela inicial — "descubra a senha e faça login".
- * É um mini-CTF de brincadeira, na própria senha do site (nada de terceiros):
- * dá pistas, mostra o hash e tem um "quebrador" simulado que revela a frase-senha,
- * amarrando com os episódios de senha fraca / handshake do Rafa & Raven.
+ * Mini-CTF de brincadeira, na própria senha do site (nada de terceiros).
+ * Os COMANDOS são reais do Kali/Linux (help, ls, cat, john, whoami, clear, login);
+ * as explicações ficam em português. Assim a pessoa já aprende o jeito certo.
  */
 (function () {
   var screen = document.getElementById("chal-screen");
@@ -32,9 +32,9 @@
     screen.scrollTop = screen.scrollHeight;
   }
 
-  var PISTAS = [
-    "A senha de acesso é uma FRASE-SENHA fraca — de propósito! Você vai sentir na",
-    "pele por que senha previsível é ruim (lembra do EP07?).",
+  var HINTS = [
+    "A senha de acesso é uma FRASE-SENHA fraca — de propósito! Você vai sentir",
+    "na pele por que senha previsível é ruim (lembra do EP07?).",
     "",
     "Regras: 4 palavras comuns em português, tudo junto, minúsculas, SEM acento.",
     "Tema: uma cena do sertão do Rafa & Raven ao meio-dia.",
@@ -48,91 +48,104 @@
     "Montou? Rode:  login <suasenha>   (ou use a caixa de login ao lado)",
   ];
 
-  var WORDLIST = ["123456", "senha", "admin", "qwerty", "futebol", "brasil", "raven",
-    "cachorro", "cavaloazul", "cavalopreto", "cavaloazultelhado", "cavaloazultelhadocafe"];
+  // "candidatos" testados pelo john (o último é a senha certa)
+  var GUESSES = ["123456", "password", "admin", "qwerty", "futebol",
+    "cavaloazul", "cavaloazultelhado", "cavaloazultelhadocafe"];
 
   function help() {
-    line("Comandos do desafio:", "text-terminal");
-    line("  ajuda                 mostra esta ajuda");
-    line("  ls                    lista os arquivos");
-    line("  cat <arquivo>         abre um arquivo (ex.: cat pistas.txt)");
-    line("  quebrar               roda um ataque de dicionário (simulado)");
-    line("  login <senha>         tenta entrar com a senha que você montou");
-    line("  dica                  uma ajudinha rápida");
-    line("  limpar                limpa a tela");
+    line("Comandos disponíveis (reais do Linux):", "text-terminal");
+    line("  help                     mostra esta ajuda");
+    line("  whoami                   mostra o usuário atual");
+    line("  ls [-a]                  lista arquivos (-a mostra os ocultos)");
+    line("  cat <arquivo>            exibe um arquivo (ex.: cat hints.txt)");
+    line("  john <arquivo>           quebra o hash com dicionário (John the Ripper)");
+    line("  login <senha>            entra com a senha que você montou");
+    line("  clear                    limpa a tela");
   }
 
-  function crackAnim(i) {
-    if (i >= WORDLIST.length) { busy = false; return; }
-    var w = WORDLIST[i];
-    var ok = i === WORDLIST.length - 1;
-    line((ok ? "[+] ACHOU  " : "[-] testando ") + w, ok ? "text-terminal font-bold" : "text-gray-500");
+  function johnRun(i) {
+    if (i === 0) {
+      line("Using default input encoding: UTF-8", "text-gray-500");
+      line("Loaded 1 password hash (raw-SHA256 [SHA256 256/256])", "text-gray-500");
+      line("Press 'q' or Ctrl-C to abort, almost any other key for status", "text-gray-500");
+    }
+    if (i >= GUESSES.length) { busy = false; return; }
+    var w = GUESSES[i];
+    var ok = i === GUESSES.length - 1;
     if (ok) {
-      line("", "");
-      line("senha encontrada: " + w, "text-terminal font-bold");
-      line("Era previsível — por isso quebrou rápido. Agora faça: login " + w, "text-amber-light");
+      line(w + "  (?)", "text-terminal font-bold");
+      line("1g 0:00:00:02 DONE (dicionário) — senha fraca, quebrou em segundos.", "text-gray-500");
+      line("Use agora:  login " + w, "text-amber-light");
       busy = false;
     } else {
-      setTimeout(function () { crackAnim(i + 1); }, 320);
+      line("trying: " + w, "text-gray-600");
+      setTimeout(function () { johnRun(i + 1); }, 300);
     }
   }
 
   async function handle(raw) {
-    var parts = raw.split(/\s+/);
+    var parts = raw.split(/\s+/).filter(Boolean);
     var cmd = (parts[0] || "").toLowerCase();
-    var arg = parts.slice(1).join(" ");
+    var args = parts.slice(1);
+    var arg = args.join(" ");
     switch (cmd) {
+      case undefined:
       case "":
         break;
-      case "ajuda":
       case "help":
         help();
         break;
-      case "ls":
-      case "dir":
-        line("pistas.txt   .senha.sha256   cofre/");
+      case "whoami":
+        line("root");
         break;
+      case "pwd":
+        line("/root/challenge");
+        break;
+      case "ls": {
+        var showHidden = args.some(function (a) { return /^-.*a/.test(a); });
+        if (showHidden) line(".  ..  .hash.sha256  hints.txt  vault");
+        else line("hints.txt  vault");
+        if (!showHidden) line("(dica: tem arquivo oculto. tente: ls -a)", "text-gray-600");
+        break;
+      }
       case "cat":
-        if (arg === "pistas.txt") PISTAS.forEach(function (l) { line(l, l.indexOf(")") > -1 ? "text-amber-light" : "text-gray-300"); });
-        else if (arg === ".senha.sha256") {
+        if (arg === "hints.txt") HINTS.forEach(function (l) { line(l, l.indexOf(")") > -1 ? "text-amber-light" : "text-gray-300"); });
+        else if (arg === ".hash.sha256") {
           line(HASH, "text-terminal");
           line("É o hash SHA-256 da senha. Hash é só de ida: não dá pra 'desfazer',", "text-gray-500");
           line("só TESTAR candidatos até um bater (igual ao handshake do EP06).", "text-gray-500");
-        } else if (arg === "cofre/README" || arg === "cofre/readme") {
-          line("Vazio. O cofre só abre com a frase-senha certa no login. :)");
-        } else if (arg === "cofre" || arg === "cofre/") {
-          line("cat: cofre/: É um diretório. Tente: cat cofre/README", "text-red-400");
+          line("Para testar com um dicionário:  john .hash.sha256", "text-amber-light");
+        } else if (arg === "vault/README" || arg === "vault/readme") {
+          line("O cofre só abre com a frase-senha certa no login. :)");
+        } else if (arg === "vault" || arg === "vault/") {
+          line("cat: vault/: Is a directory", "text-red-400");
+        } else if (!arg) {
+          line("usage: cat <arquivo>", "text-red-400");
         } else {
-          line("cat: " + (arg || "arquivo") + ": não encontrado", "text-red-400");
+          line("cat: " + arg + ": No such file or directory", "text-red-400");
         }
         break;
-      case "quebrar":
       case "john":
       case "hashcat":
         if (busy) return;
         busy = true;
-        line("Rodando dicionário contra .senha.sha256 ...", "text-gray-400");
-        setTimeout(function () { crackAnim(0); }, 300);
+        johnRun(0);
         break;
-      case "dica":
-        line("4 palavras: um ANIMAL + uma COR + parte da CASA + uma BEBIDA. Tudo junto, sem acento.", "text-amber-light");
-        break;
-      case "limpar":
       case "clear":
         screen.innerHTML = "";
         break;
       case "login":
-        if (!arg) { line("uso: login <senha>", "text-red-400"); break; }
-        line("Testando acesso...", "text-gray-400");
+        if (!arg) { line("usage: login <senha>", "text-red-400"); break; }
+        line("Checando acesso...", "text-gray-400");
         if (await window.Gate.tentar(arg)) {
           line("ACESSO LIBERADO! Bem-vindo(a), hacker ético. Entrando...", "text-terminal font-bold");
           setTimeout(function () { window.location.href = destino; }, 900);
         } else {
-          line("Senha incorreta. Releia as pistas (cat pistas.txt) ou rode: quebrar", "text-red-400");
+          line("Senha incorreta. Releia as pistas (cat hints.txt) ou rode: john .hash.sha256", "text-red-400");
         }
         break;
       default:
-        line("comando não encontrado: " + cmd + "   (digite 'ajuda')", "text-red-400");
+        line(cmd + ": command not found   (digite 'help')", "text-red-400");
     }
   }
 
@@ -145,7 +158,7 @@
   });
 
   // Intro
-  line("Guia Linux Iniciante — DESAFIO DE ACESSO", "text-terminal font-bold");
+  line("Guia Linux Iniciante — ACCESS CHALLENGE", "text-terminal font-bold");
   line("Sua missão: descobrir a frase-senha e fazer login.", "text-gray-300");
-  line("Digite  ajuda  para começar.", "text-amber-light");
+  line("Digite  help  para começar.", "text-amber-light");
 })();

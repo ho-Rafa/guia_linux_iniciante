@@ -55,7 +55,7 @@
           <div id="chal-screen" class="p-4 font-mono text-xs text-gray-200 h-80 sm:h-96 overflow-y-auto space-y-1.5 leading-relaxed"></div>
           <form id="chal-form" class="p-3 bg-darkbg-base border-t border-gray-800 flex items-center gap-2 font-mono text-xs">
             <span class="text-terminal font-bold shrink-0">root@guia:~$</span>
-            <input id="chal-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="digite 'ajuda' e dê Enter..." class="w-full bg-transparent text-white focus:outline-none font-mono" />
+            <input id="chal-input" type="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="type 'help' and press Enter..." class="w-full bg-transparent text-white focus:outline-none font-mono" />
             <button type="submit" class="px-3 py-1 rounded bg-terminal text-black font-bold text-[11px] hover:bg-terminal-glow">RUN</button>
           </form>
         </div>
@@ -70,10 +70,10 @@
             <i data-lucide="book-open" class="w-4 h-4 text-amber"></i> Como tentar "hackear"
           </h2>
           <ol class="space-y-2.5 text-xs text-gray-300 font-mono">
-            <li class="flex gap-2.5"><span class="text-amber font-bold">1</span> No terminal, digite <code class="text-terminal">ajuda</code> para ver os comandos.</li>
-            <li class="flex gap-2.5"><span class="text-amber font-bold">2</span> Liste os arquivos com <code class="text-terminal">ls</code> e leia as pistas: <code class="text-terminal">cat pistas.txt</code>.</li>
-            <li class="flex gap-2.5"><span class="text-amber font-bold">3</span> Espie o hash: <code class="text-terminal">cat .senha.sha256</code>.</li>
-            <li class="flex gap-2.5"><span class="text-amber font-bold">4</span> Monte a frase-senha das pistas — ou rode <code class="text-terminal">quebrar</code> pra ver o ataque de dicionário.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">1</span> No terminal, digite <code class="text-terminal">help</code> para ver os comandos.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">2</span> Mostre os arquivos ocultos com <code class="text-terminal">ls -a</code> e leia: <code class="text-terminal">cat hints.txt</code>.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">3</span> Espie o hash: <code class="text-terminal">cat .hash.sha256</code>.</li>
+            <li class="flex gap-2.5"><span class="text-amber font-bold">4</span> Monte a frase-senha das pistas — ou rode <code class="text-terminal">john .hash.sha256</code> pra quebrar com dicionário.</li>
             <li class="flex gap-2.5"><span class="text-amber font-bold">5</span> Entre com <code class="text-terminal">login &lt;senha&gt;</code> ou use a caixa abaixo.</li>
           </ol>
           <p class="text-[11px] text-gray-500 mt-3">Dica honesta: a senha é fraca de propósito — você vai aprender por que isso é ruim lá dentro.</p>
